@@ -1,9 +1,7 @@
-import { TauriAPI } from '../api/tauri'
-
 export const useTray = () => {
-  const updateTrayMenu = async (serviceRunning: boolean) => {
+  const updateTrayMenu = async (serviceRunning) => {
     try {
-      await TauriAPI.tray.update(serviceRunning)
+      // 空方法，不执行任何操作
     } catch (error) {
       console.error('Failed to update tray menu:', error)
     }

@@ -1,9 +1,7 @@
 <template>
   <div>
-    <!-- MessageToast component -->
     <MessageToast ref="messageRef" />
 
-    <!-- ConfirmMessageBox component -->
     <ConfirmMessageBox
       :is-open="confirmVisible"
       :title="confirmOptions.title"
@@ -19,10 +17,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { onMounted, reactive, ref, useTemplateRef } from 'vue'
 
-import useConfirm, { type ConfirmOptions } from '@/hooks/useConfirm'
+// 移除类型导入，只保留逻辑导入
+import useConfirm from '@/hooks/useConfirm'
 import useMessage from '@/hooks/useMessage'
 
 import ConfirmMessageBox from './ConfirmMessageBox.vue'
@@ -30,7 +29,9 @@ import MessageToast from './MessageToast.vue'
 
 const messageRef = useTemplateRef('messageRef')
 const confirmVisible = ref(false)
-const confirmOptions = reactive<ConfirmOptions>({
+
+// 移除 <ConfirmOptions> 类型约束
+const confirmOptions = reactive({
   message: '',
   title: 'Confirm',
   type: 'info',
@@ -40,7 +41,8 @@ const confirmOptions = reactive<ConfirmOptions>({
   center: false,
 })
 
-let confirmResolve: ((value: boolean) => void) | null = null
+// 移除类型标注
+let confirmResolve = null
 
 const handleConfirm = () => {
   confirmVisible.value = false
@@ -58,7 +60,8 @@ const handleCancel = () => {
   }
 }
 
-const showConfirm = (options: ConfirmOptions): Promise<boolean> => {
+// 移除参数和返回值的类型定义
+const showConfirm = (options) => {
   return new Promise(resolve => {
     Object.assign(confirmOptions, {
       title: 'Confirm',
@@ -93,7 +96,7 @@ onMounted(() => {
 })
 </script>
 
-<script lang="ts">
+<script>
 export default {
   name: 'UIServiceProvider',
 }

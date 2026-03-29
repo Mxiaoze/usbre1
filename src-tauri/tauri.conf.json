@@ -12,11 +12,15 @@
   "app": {
     "windows": [
       {
-        "title": "usbauto_自动连接工具 by:小泽",
-        "width": 600,
-        "height": 400,
+        "title": "USB自动连接工具",
+        "width": 900,
+        "height": 600,
+        "resizable": true,
         "decorations": false,
-        "transparent": true
+        "transparent": true,
+        "titleBarStyle": "Overlay",
+        "visible": true,
+        "center": true
       }
     ],
     "security": {
