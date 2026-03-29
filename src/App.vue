@@ -59,6 +59,7 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 
 import UIServiceProvider from './components/ui/UIServiceProvider.vue'
+import { getCurrentWindow } from '@tauri-apps/api/window'
 
 
 import Navigation from './components/NavigationPage.vue'
@@ -85,6 +86,7 @@ onMounted(async () => {
     })
   } finally {
     isLoading.value = false
+    await getCurrentWindow().show()
   }
 })
 
