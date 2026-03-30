@@ -6,13 +6,8 @@ export function useTranslation() {
 
   const currentLocale = computed(() => locale.value)
 
-  const switchLanguage = (lang) => {
+  const switchLanguage = lang => {
     locale.value = lang
-    localStorage.setItem('preferred-language', lang)
-  }
-
-  const getStoredLanguage = () => {
-    return localStorage.getItem('preferred-language') || 'zh'
   }
 
   const isChineseLocale = computed(() => locale.value === 'zh')
@@ -23,7 +18,6 @@ export function useTranslation() {
     currentLocale,
     availableLocales,
     switchLanguage,
-    getStoredLanguage,
     isChineseLocale,
     isEnglishLocale,
   }

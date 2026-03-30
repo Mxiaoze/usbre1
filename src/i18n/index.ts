@@ -8,17 +8,10 @@ export type MessageSchema = typeof en
 
 export const SUPPORT_LOCALES = ['zh', 'en']
 
-function getStoredLanguage(): string {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('preferred-language') || 'zh'
-  }
-  return 'zh'
-}
-
 export function setupI18n(options: { locale?: string } = {}) {
   const i18n = createI18n<[MessageSchema], 'zh' | 'en'>({
     legacy: false,
-    locale: options.locale ?? getStoredLanguage(),
+    locale: options.locale === 'en' ? 'en' : 'zh',
     fallbackLocale: 'en',
     messages: {
       zh,

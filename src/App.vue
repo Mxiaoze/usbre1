@@ -7,7 +7,7 @@
       <div class="mb-8 flex justify-center">
         <div class="relative w-20 h-20 flex items-center justify-center">
           <div class="relative z-2">
-            <img src="./assets/logo.svg" alt="App Logo" class="w-26 h-26" />
+            <img src="/tauri.svg" alt="App Logo" class="w-26 h-26" />
           </div>
           <div
             class="absolute -inset-5 bg-[conic-gradient(from_0deg,transparent,rgba(255,255,255,0.2),transparent)] rounded-full"
@@ -56,45 +56,26 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import UIServiceProvider from './components/ui/UIServiceProvider.vue'
-import { getCurrentWindow } from '@tauri-apps/api/window'
-
-
 import Navigation from './components/NavigationPage.vue'
 import TitleBar from './components/ui/TitleBar.vue'
 import { useTranslation } from './composables/useI18n'
-import { useTray } from './composables/useTray'
 import { useAppStore } from './stores/app'
 import { isMacOs } from './utils/constant'
 
 const appStore = useAppStore()
-const { t } = useTranslation()
-const { updateTrayMenu } = useTray()
+const { t, switchLanguage } = useTranslation()
 const isLoading = ref(true)
-
-let updateUnlisten: (() => void) | null = null
 
 onMounted(async () => {
   try {
     await appStore.init()
+    switchLanguage(appStore.settings.app.language || 'zh')
     appStore.applyTheme(appStore.settings.app.theme || 'light')
-    await updateTrayMenu(appStore.openlistCoreStatus.running)
-    updateUnlisten = await TauriAPI.updater.onBackgroundUpdate(updateInfo => {
-      appStore.setUpdateAvailable(true, updateInfo)
-    })
   } finally {
     isLoading.value = false
-    await getCurrentWindow().show()
-  }
-})
-
-onUnmounted(() => {
-  try {
-    updateUnlisten?.()
-  } catch (err) {
-    console.warn('Error cleaning up global update listener:', err)
   }
 })
 </script>

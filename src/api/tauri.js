@@ -1,53 +1,41 @@
-// src/api/tauri.js
-// 已清空所有更新插件、自动更新代码 → 100% 无报错
+import { invoke } from '@tauri-apps/api/core'
+import { relaunch } from '@tauri-apps/plugin-process'
 
-import { invoke } from '@tauri-apps/api/primitives'
-import { appDataDir, join } from '@tauri-apps/api/path'
+import { DEFAULT_SETTINGS } from '../utils/constant'
 
-// 空壳 TauriAPI，只保留项目运行必需的最小功能
+function clone(value) {
+  return JSON.parse(JSON.stringify(value))
+}
+
+function mergeSettings(value) {
+  return {
+    ...clone(DEFAULT_SETTINGS),
+    ...(value || {}),
+    app: {
+      ...clone(DEFAULT_SETTINGS).app,
+      ...(value?.app || {}),
+    },
+  }
+}
+
 export const TauriAPI = {
   settings: {
-    load: async () => ({}),
-    save: async () => ({}),
-    reset: async () => ({}),
-    saveAndRestart: async () => ({}),
-  },
-  core: {
-    start: async () => ({}),
-    stop: async () => ({}),
-    getStatus: async () => ({ running: false }),
-  },
-  rclone: {
-    remotes: {
-      listConfig: async () => ({}),
-      create: async () => true,
-      update: async () => true,
-      delete: async () => true,
+    load: async () => {
+      const settings = await invoke('load_settings')
+      return mergeSettings(settings)
     },
-    mounts: {
-      list: async () => [],
-      mount: async () => ({}),
-      unmount: async () => ({}),
+    save: async settings => {
+      const saved = await invoke('save_settings', { settings: mergeSettings(settings) })
+      return mergeSettings(saved)
+    },
+    reset: async () => {
+      const settings = await invoke('reset_settings')
+      return mergeSettings(settings)
     },
   },
-  logs: {
-    get: async () => [],
-    clear: async () => true,
-    resetAdminPassword: async () => '',
-    setAdminPassword: async () => true,
-  },
-  files: {
-    open: async () => ({}),
-    folder: async () => ({}),
-    openLogsDirectory: async () => ({}),
-    openOpenListDataDir: async () => ({}),
-    openRcloneConfigFile: async () => ({}),
-    openSettingsFile: async () => ({}),
-  },
-  util: {
-    selectDirectory: async () => null,
-  },
-  tray: {
-    update: async () => ({}),
+  app: {
+    relaunch: async () => {
+      await relaunch()
+    },
   },
 }
