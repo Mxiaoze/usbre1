@@ -25,7 +25,7 @@ const routes = [
     path: '/about',
     name: 'About',
     component: AboutView,
-  },
+  }
 ]
 
 const router = createRouter({

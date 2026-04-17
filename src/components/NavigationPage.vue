@@ -13,11 +13,11 @@ const navItems = [
 
 <template>
   <nav
-    class="group no-scrollbar flex h-screen w-37.5 flex-col gap-2 overflow-hidden border-r border-r-border-secondary/50 bg-bg-secondary transition-all duration-medium ease-apple"
+    class="group no-scrollbar flex h-screen w-[100px] flex-col gap-2 overflow-hidden border-r border-r-border-secondary/50 bg-bg-secondary transition-all duration-medium ease-apple"
   >
     <div class="relative mt-5 flex items-center justify-center bg-bg-secondary px-4">
       <div class="flex flex-col items-center gap-1">
-        <span class="font-bold tracking-tight text-main">桌面模板</span>
+<!--        <span class="font-bold tracking-tight text-main">桌面模板</span>-->
       </div>
     </div>
 
